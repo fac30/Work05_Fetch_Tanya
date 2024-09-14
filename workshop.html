@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real world fetch</title>
+  </head>
+  <body>
+    <H2>Pokemon Search</H2>
+    <form>
+      <label for="name">Pokemon name</label>
+      <input id="name"/>
+      <button type="submit">Search</button>
+    </form>
+    <p id="output"></p>
+
+    <script>
+      const myForm = document.querySelector('form');
+      const output = document.querySelector('#output');
+
+      myForm.addEventListener('submit', event => {
+          event.preventDefault();
+          const namePokemon = document.querySelector('#name').value.toLowerCase();
+          // console.log(namePokemon);
+          // const data = { namePokemon };
+          const URL = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
+          // console.log(URL);
+          
+          // fetch the data using GET request, don't need body and header
+          fetch(URL)
+            .then(response => {
+              if (response.ok !== true) {
+                throw new Error(`Pokémon not found: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Show the Pokémon's name and sprite
+              output.innerHTML = `<h3>${data.name}</h3><img src="${data.sprites.front_shiny}" alt="${data.name}" />`
+            })
+            .catch((error) => {
+              output.textContent = error.message; // Show error message if Pokémon is not found
+            });
+       });
+
+
+
+      //const data = { name: 'oli'};
+
+      // fetch("https://echo.oliverjam.workers.dev/json", { 
+      //   method: "POST",
+      //   body: JSON.stringify(data),
+      //   headers: {"content-type": "application/json"},
+      // })
+      //   .then(response => {
+      //     if (response.ok !== true) {
+      //       throw new Error(response.status);
+      //     }
+      //     return response.json();
+      //   })
+      //   .then((json) => console.log(json))
+      //   .catch((error) => console.error(error));
+
+     
+      // const myForm = document.querySelector('form');
+
+      // myForm.addEventListener('submit', event => {
+      //     event.preventDefault();
+      //     // const nameInput = document.querySelector('name');
+      //     // const emailInput = document.querySelector('email');
+      //     // const data = { nameInput, emailInput };
+      //     const formData = new FormData(form);
+      //     const data = Object.fromEntries(formData);
+   
+
+      //   fetch("https://reqres.in/api/users", {
+      //     method: "POST",
+      //     bode: JSON.stringify(data),
+      //     header: {"content-type": "application/json"},
+      //   })
+      //     .then(response => {
+      //       if (response.ok !== true) {
+      //         throw new Error(response.status);
+      //       }
+      //       return response.json();
+      //     })
+      //     .then((json) => console.log(json))
+      //     .catch((error) => console.error(error));
+      // });
+
+    </script>
+  </body>
+</html>
